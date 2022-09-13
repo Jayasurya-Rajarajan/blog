@@ -1,0 +1,49 @@
+.header{
+    min-height: 30px;
+    background-color: black;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    margin: 5px;
+
+}
+.left-navbar{
+    width: 250px;
+    height: 100%;
+    overflow: auto;
+    position: fixed;
+    background-color: black;
+    color: white;
+    margin: 5px;
+    border-radius: 20px;
+}
+.flex-container{
+    display: flex;
+}
+.flex-item-leftnav{
+    width: 20%;
+    background-color: black;
+    margin: 5px;
+    border-radius: 20px;
+    padding: 10px 10px;
+
+}
+.flex-item-rightnav{
+    width: 20%;
+    background-color: black;
+    margin: 5px;
+    border-radius: 20px;
+    padding: 10px 10px;
+}
+.flex-item-post{
+    width: 60%;
+    background-color: black;
+    margin: 5px;
+    border-radius: 20px;
+    padding: 10px 10px;
+    max-height: 700px;
+    overflow-y: auto;
+
+}
