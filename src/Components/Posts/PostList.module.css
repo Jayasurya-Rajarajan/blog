@@ -1,0 +1,13 @@
+.list-wrap{
+    min-height: 200px;
+    background: #202020;
+    
+    margin:5px;
+    border-radius: 25px;
+}
+
+.list-wrap:hover{
+    transition: .3s;
+    opacity: .7;
+    color: white;
+}

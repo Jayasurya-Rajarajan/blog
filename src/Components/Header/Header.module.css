@@ -1,0 +1,10 @@
+.header-container h1:hover{
+    transition: .4s;
+    font-size: 3em;
+}
+.header-container{
+    position: absolute;
+}
+.header-container h1{
+    transition: .4s;
+}
