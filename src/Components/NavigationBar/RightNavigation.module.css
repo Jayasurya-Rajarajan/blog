@@ -1,0 +1,44 @@
+.container{
+    display: flex;
+    flex-direction: column;
+}
+.inner-container{
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+.inner-container input{
+    margin: 10px;
+    height: 40px;
+    border: 1px solid lightblue;
+    border-radius: 10px;
+    font-size: large;
+}
+.inner-container input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+.inner-container textarea{
+    margin: 10px;
+    height: 200px;
+    border: 1px solid lightblue;
+    border-radius: 10px;
+    font-size: large;
+}
+.inner-container button{
+    margin: 10px;
+    height: 40px;
+    width: 100px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    background-color: rgb(29, 155, 240);
+}
+::placeholder{
+    font-size: large;
+    font-family: 'Courier New', Courier, monospace;
+}

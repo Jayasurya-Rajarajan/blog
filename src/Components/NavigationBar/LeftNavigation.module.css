@@ -1,0 +1,19 @@
+.inner-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 25px;
+}
+.leftpanel-profile img{
+    border-radius: 50%;
+}
+.leftpanel-profile img:hover{
+    filter: blur(1px);
+    cursor: default;
+}
+.image-text{
+    position: absolute;
+    margin: 70px;
+    color: black;
+}
