@@ -17,12 +17,27 @@
 }
 .top-userdetails h2{
     padding: 5px;
+    font-size: 22px;
 }
 .image-part img{
     width: 40px;
     height: 40px;
     margin-top: 15px;
-    background-color: white;
+    /* background-color: white; */
     border-radius: 50px;
     padding: 5px;
+}
+.post-date{
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+}
+.post-date p{
+    font-size: 14px;
+    padding: 10px;
+    color: dimgray;
+}
+.delete-post{
+    display: flex;
+    justify-content: end;
 }

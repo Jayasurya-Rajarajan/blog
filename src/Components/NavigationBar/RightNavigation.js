@@ -3,17 +3,16 @@ import styles from './RightNavigation.module.css';
 const RightNavigation = (props) =>{
     const inputTitleRef = useRef("");
     const textAreaDescriptionRef = useRef();
-    const [blogPost, setBlogPost] = useState([]);
     const postClickHandler = (event) =>{
         event.preventDefault();
         const postDetails = {
             title: inputTitleRef.current.value,
             description: textAreaDescriptionRef.current.value
         }
-        setBlogPost(postDetails)
         props.onGetPostHandler(postDetails)
         inputTitleRef.current.value = "";
         textAreaDescriptionRef.current.value = "";
+        
         
     }
     return(

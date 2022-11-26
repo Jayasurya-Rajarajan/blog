@@ -11,6 +11,9 @@ const Layout = (props) => {
   const getPostHandler = (post) =>{
     setPost(post)
   }
+  const clearState = () =>{
+    setPost({});
+  }
   return (
     <>
     <NoteProvider>
@@ -22,7 +25,7 @@ const Layout = (props) => {
           <LeftNavigation />
         </div>
         <div className={styles["flex-item-post"]}>
-          <Post newPost={post} />
+          <Post newPost={post} clearStateHandler={clearState} />
         </div>
         <div className={styles["flex-item-rightnav"]}>
           <RightNavigation onGetPostHandler={getPostHandler} />

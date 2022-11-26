@@ -11,9 +11,27 @@
 .leftpanel-profile img:hover{
     filter: blur(1px);
     cursor: default;
+    
 }
-.image-text{
+.change-image-text:hover{
     position: absolute;
     margin: 70px;
     color: black;
+    display: block;
+}
+.change-image-text{
+    position: absolute;
+    margin: 70px;
+    color: black;
+    display: none;
+}
+.setting-icon{
+    position: absolute;
+    display: flex;
+    color: dimgray;
+    font-size: 25px;
+    padding: 15px;
+}
+.setting-icon:hover{
+    color: whitesmoke;
 }

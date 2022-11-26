@@ -3,9 +3,9 @@
     background-color: black;
     overflow: hidden;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    border-radius: 20px;
+    border-radius: 15px;
     margin: 5px;
     
 
@@ -18,7 +18,7 @@
     background-color: black;
     color: white;
     margin: 5px;
-    border-radius: 20px;
+    border-radius: 15px;
 }
 .flex-container{
     display: flex;
@@ -27,7 +27,7 @@
     width: 20%;
     background-color: black;
     margin: 5px;
-    border-radius: 20px;
+    border-radius: 15px;
     padding: 10px 10px;
 
 }
@@ -35,14 +35,14 @@
     width: 20%;
     background-color: black;
     margin: 5px;
-    border-radius: 20px;
+    border-radius: 15px;
     padding: 10px 10px;
 }
 .flex-item-post{
     width: 60%;
     background-color: black;
     margin: 5px;
-    border-radius: 20px;
+    border-radius: 15px;
     padding: 10px 10px;
     max-height: 700px;
 

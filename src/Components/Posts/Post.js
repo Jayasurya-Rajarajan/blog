@@ -2,60 +2,29 @@ import React,{ useEffect, useState, useContext } from "react";
 import styles from "./Post.module.css";
 import PostList from "./PostList";
 import BlogsContext from "../../Store/Blogs/Blogs-Context";
-let DUMMY_DATA = [
-  {
-    name: "jayasurya",
-    title: "first post",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-  },
-  {
-    name: "surya",
-    title: "second post",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-  },
-  {
-    name: "mukesh",
-    title: "third post",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-  },
-  {
-    name: "gunalan",
-    title: "fourth post",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-  },
-  {
-    name: "yasar",
-    title: "fifth post",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-  },
-  {
-    name: "niyas",
-    title: "sixth post",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-  },
-  {
-    name: "elakkiyan",
-    title: "seventh post",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-  },
-  {
-    name: "vishnu",
-    title: "eight post",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-  },
-];
+import useHttp from "../../Hooks/use-http";
 
 const Post = (props) => {
   const [blogs, setBlogs] = useState([]);
   const blogCtx = useContext(BlogsContext);
+  const { sendRequest } = useHttp();
+  let content = "";
+  if(blogCtx.blogs.length === 0){
+    content = <p>Loading...</p>
+  }
+  else{
+    content = blogCtx.blogs.map((item, index) => (
+      <PostList key={index} id={item.Id} posts={item} />
+    ))
+  }
+  const getBlogResponse = (response) =>{
+    if(response.status){
+      blogCtx.addBlogs(response.data)
+    }
+    else{
+      content = <p style={{ color:'red' }}>Something went wrong</p>
+    }
+  }
   if (props.newPost.title !== undefined) {
     if (
       props.newPost.title.trim().length !== 0 ||
@@ -72,6 +41,8 @@ const Post = (props) => {
         content: props.newPost.description,
       };
       console.log("blog ctx", blogCtx)
+      
+      
       fetch("https://localhost:44387/api/Blogs/PostBlog", {
         method: "POST", // or 'PUT'
         headers: {
@@ -82,31 +53,39 @@ const Post = (props) => {
         .then((response) => response.json())
         .then((data) => {
           console.log("Success:", data);
+          blogCtx.postBlog(data.data);
+          props.clearStateHandler();
           
           return;
         })
         .catch((error) => {
           console.error("Error:", error);
         });
-
-      
-      DUMMY_DATA = [post, ...DUMMY_DATA];
     }
   }
   useEffect(()=>{
-    fetch('https://localhost:44387/api/Blogs/GetBlogs',{
+    const params = {
+      startNum: 1,
+      endNum: 50
+    }
+    const options = {
       method: 'GET',
-      headers: {
-        "Content-Type": "application/json",
-      }
-    }).then((response)=>response.json())
-    .then((data)=>{ 
-      console.log("blogs ",data.blogs)
-      blogCtx.addBlogs(data.blogs)
-    })
-    .catch((error)=>{
-      console.log("error ",error)
-    })
+      body: JSON.stringify(params)
+    }
+    sendRequest({
+      url: 'https://localhost:44387/api/Blogs/GetBlogs?startNum=1&endNum=50',
+      data: JSON.stringify(params)
+    },getBlogResponse)
+    // fetch('https://localhost:44387/api/Blogs/GetBlogs?startNum=1&endNum=50'
+      
+    // ).then((response)=>response.json())
+    // .then((data)=>{ 
+    //   console.log("blogs ",data.blogs)
+    //   blogCtx.addBlogs(data.blogs)
+    // })
+    // .catch((error)=>{
+    //   console.log("error ",error)
+    // })
   },[])
   return (
     <>
@@ -115,9 +94,7 @@ const Post = (props) => {
           <h1>Posts</h1>
         </div>
         <div className={styles["post-content"]}>
-          {blogCtx.blogs.map((item, index) => (
-            <PostList key={index} id={item.Id} posts={item} />
-          ))}
+          {content}
         </div>
       </div>
     </>

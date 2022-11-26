@@ -4,6 +4,7 @@ const BlogsContext = React.createContext({
     blogs: [],
     totalBlogs: 0,
     addBlogs: (blog)=>{ },
-    removeBlog: (id) => { }
+    removeBlog: (id) => { },
+    postBlog: (blog)=>{ }
 })
 export default BlogsContext;

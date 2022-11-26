@@ -13,6 +13,14 @@ const blogsReducer = (state, action) =>{
             blogs: action.blog
         }
     }
+    if(action.type === "POST"){
+        console.log("post ", state, action)
+        return{
+            ...state,
+            blogs: [action.blog, ...state.blogs]
+        }
+
+    }
     return defaultBlogsState;
 }
 
@@ -24,11 +32,17 @@ const BlogsProvider = (props) =>{
             blog: blog
         })
     }
-
+    const postBlogHandler = (blog) =>{
+        dispatchBlogsAction({
+            type:'POST',
+            blog: blog
+        })
+    }
     const blogsContext = {
         blogs: blogsState.blogs,
         totalBlogs: blogsState.totalBlogs,
         addBlogs: addBlogsHandler,
+        postBlog: postBlogHandler,
         
     }
     return(

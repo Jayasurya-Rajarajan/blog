@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./LeftNavigation.module.css";
 import profile from "../../ProfileImages/human-profile.jpg";
 import Input from "../Inputs/Input";
+import Settings from "../Setting/Settings";
 const LeftNavigation = (props) => {
   const profilePhotoChangeHandler = (event) =>{
     event.preventDefault();
@@ -9,10 +10,13 @@ const LeftNavigation = (props) => {
   }
   return (
     <>
+    <div className={styles['setting-icon']}>
+      <Settings />
+    </div>
       <div className={styles["container"]}>
         <div className={styles["inner-container"]}>
           <div className={styles["leftpanel-profile"]}>
-            <p className={styles['image-text']}><strong>change</strong></p>
+            <p className={styles['change-image-text']}><strong>change</strong></p>
             <img src={profile} onClick={profilePhotoChangeHandler} height="150px" width="150px" />
             <Input onProfilePhotoChangeHandler={profilePhotoChangeHandler} />
           </div>
