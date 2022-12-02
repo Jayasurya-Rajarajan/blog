@@ -1,4 +1,4 @@
-import React,{ useEffect, useState, useContext } from "react";
+import React,{ useEffect, useState, useContext, useRef, useCallback } from "react";
 import styles from "./Post.module.css";
 import PostList from "./PostList";
 import BlogsContext from "../../Store/Blogs/Blogs-Context";
@@ -7,18 +7,34 @@ import useHttp from "../../Hooks/use-http";
 const Post = (props) => {
   const [blogs, setBlogs] = useState([]);
   const blogCtx = useContext(BlogsContext);
+  const [totalRecords, setTotalRecords] = useState();
   const { sendRequest } = useHttp();
   let content = "";
+  let isLoaded = false;
+  const observer = useRef();
+  const endBlogRefCallBack = useCallback((node)=>{
+    if(blogCtx.blogs.length === 0) return
+    if(observer.current) observer.current.disconnect()
+    observer.current = new IntersectionObserver(entries =>{
+      if(entries[0].isIntersecting){
+        console.log('visible')
+      }
+    })
+    if(node) observer.current.observe(node)
+  },[blogCtx.blogs])
+
   if(blogCtx.blogs.length === 0){
     content = <p>Loading...</p>
   }
   else{
-    content = blogCtx.blogs.map((item, index) => (
-      <PostList key={index} id={item.Id} posts={item} />
-    ))
+    isLoaded = true
+    // content = blogCtx.blogs.map((item, index) => (
+    //   <PostList key={index} id={item.Id} posts={item} />
+    // ))
   }
   const getBlogResponse = (response) =>{
     if(response.status){
+      setTotalRecords(response.totalRecords);
       blogCtx.addBlogs(response.data)
     }
     else{
@@ -94,7 +110,20 @@ const Post = (props) => {
           <h1>Posts</h1>
         </div>
         <div className={styles["post-content"]}>
-          {content}
+          {/* {content} */}
+          {
+            isLoaded ?
+            blogCtx.blogs.map((item, index) => {
+              if(blogCtx.blogs.length === index + 1){
+                 return <div key={index} ref={endBlogRefCallBack}><PostList key={index} id={item.Id} posts={item} /></div>
+              }
+              else{
+                return <div key={index}><PostList key={index} id={item.Id} posts={item} /></div>
+              }   
+          })
+          :
+          <p>Loading...</p>
+          }
         </div>
       </div>
     </>

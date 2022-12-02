@@ -31,11 +31,13 @@
     display: flex;
     justify-content: end;
     align-items: flex-end;
+    height: 40px;
 }
 .post-date p{
     font-size: 14px;
     padding: 10px;
     color: dimgray;
+    height: 0px;
 }
 .delete-post{
     display: flex;

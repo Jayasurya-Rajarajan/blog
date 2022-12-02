@@ -22,11 +22,14 @@ const PostList = (props) => {
               <div className={styles["post-description"]}>
                 <p>{props.posts.Content}</p>
               </div>
-              <div className={styles["post-date"]}>
-                <p>
-                  Posted on {getDateAndTime(props.posts.CreatedOn).date}{" "}
-                  {getDateAndTime(props.posts.CreatedOn).time}
-                </p>
+              <div>
+                
+                <div className={styles["post-date"]}>
+                  <p>
+                    Posted on {getDateAndTime(props.posts.CreatedOn).date}{" "}
+                    {getDateAndTime(props.posts.CreatedOn).time}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
