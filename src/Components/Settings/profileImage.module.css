@@ -1,0 +1,21 @@
+.profile__image__parent{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.profile__image__section{
+    display: flex;
+    margin: 10px;
+    justify-content: center;
+}
+
+.profile__image{
+    background-color: black;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+.profile__image__name{
+    text-align: center;
+}

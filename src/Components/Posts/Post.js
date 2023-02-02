@@ -4,24 +4,51 @@ import PostList from "./PostList";
 import BlogsContext from "../../Store/Blogs/Blogs-Context";
 import useHttp from "../../Hooks/use-http";
 
+const RESULT_PER_PAGE = 50;
 const Post = (props) => {
   const [blogs, setBlogs] = useState([]);
   const blogCtx = useContext(BlogsContext);
-  const [totalRecords, setTotalRecords] = useState();
+  const [pageNumber, setPageNumber] = useState(1);
+  const [totalRecords, setTotalRecord] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { sendRequest } = useHttp();
   let content = "";
+  
   let isLoaded = false;
   const observer = useRef();
   const endBlogRefCallBack = useCallback((node)=>{
     if(blogCtx.blogs.length === 0) return
     if(observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries =>{
-      if(entries[0].isIntersecting){
-        console.log('visible')
+      if(entries[0].isIntersecting && hasMore){
+        if(!isLoading){
+          getPaginatedBlogs();
+        }
       }
     })
     if(node) observer.current.observe(node)
   },[blogCtx.blogs])
+
+  const getPaginatedBlogs = () =>{
+    setIsLoading(true)
+    const params = {
+      startNum: pageNumber * RESULT_PER_PAGE,
+      endNum: RESULT_PER_PAGE * (pageNumber + 1),
+    }
+    sendRequest({
+      url: `https://localhost:44387/api/Blogs/GetBlogs?startNum=${params.startNum}&endNum=${params.endNum}`,
+      data: params
+    },getPaginatedBlogsResponse)
+  }
+
+  const getPaginatedBlogsResponse = (response) =>{
+    if(response.status){
+      setPageNumber(prevPageNum => prevPageNum + 1)
+      blogCtx.loadBlogs(response.data.blogList);
+      setIsLoading(false);
+    }
+  }
 
   if(blogCtx.blogs.length === 0){
     content = <p>Loading...</p>
@@ -34,8 +61,9 @@ const Post = (props) => {
   }
   const getBlogResponse = (response) =>{
     if(response.status){
-      setTotalRecords(response.totalRecords);
-      blogCtx.addBlogs(response.data)
+      setTotalRecord(response.data.totalBlogs);
+      setHasMore(response.data.totalBlogs / 50 > pageNumber)
+      blogCtx.addBlogs(response.data.blogList)
     }
     else{
       content = <p style={{ color:'red' }}>Something went wrong</p>
@@ -46,17 +74,12 @@ const Post = (props) => {
       props.newPost.title.trim().length !== 0 ||
       props.newPost.description.trim().length !== 0
     ) {
-      const post = {
-        name: "test user",
-        title: props.newPost.title,
-        description: props.newPost.description,
-      };
+
       const data = {
         name: "test user",
         title: props.newPost.title,
         content: props.newPost.description,
       };
-      console.log("blog ctx", blogCtx)
       
       
       fetch("https://localhost:44387/api/Blogs/PostBlog", {
@@ -68,7 +91,6 @@ const Post = (props) => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Success:", data);
           blogCtx.postBlog(data.data);
           props.clearStateHandler();
           
@@ -82,11 +104,7 @@ const Post = (props) => {
   useEffect(()=>{
     const params = {
       startNum: 1,
-      endNum: 50
-    }
-    const options = {
-      method: 'GET',
-      body: JSON.stringify(params)
+      endNum: RESULT_PER_PAGE,
     }
     sendRequest({
       url: 'https://localhost:44387/api/Blogs/GetBlogs?startNum=1&endNum=50',
@@ -122,7 +140,15 @@ const Post = (props) => {
               }   
           })
           :
-          <p>Loading...</p>
+          <div className={styles['loader-div']}>
+            <span className={styles["loader"]}></span>
+          </div>
+          }
+          {
+            isLoading &&
+            <div className={styles['loader-div']}>
+              <span className={styles["loader"]}></span>
+          </div>
           }
         </div>
       </div>

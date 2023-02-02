@@ -1,0 +1,14 @@
+.setting__parent{
+    height: 100vh;
+    width: 100vw;
+    background-color: white;
+    color: black;
+    display: flex;
+    border: 1px solid red;
+    justify-content: center;
+}
+.profile__image__section{
+    border: 1px solid red;
+    width: 400px;
+    text-align: center;
+}

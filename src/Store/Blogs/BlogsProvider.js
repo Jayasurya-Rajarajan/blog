@@ -14,12 +14,17 @@ const blogsReducer = (state, action) =>{
         }
     }
     if(action.type === "POST"){
-        console.log("post ", state, action)
         return{
             ...state,
             blogs: [action.blog, ...state.blogs]
         }
 
+    }
+    if(action.type === 'LOAD_BLOGS'){
+        return{
+            ...state,
+            blogs: [...state.blogs, ...action.blogs]
+        }
     }
     return defaultBlogsState;
 }
@@ -38,11 +43,18 @@ const BlogsProvider = (props) =>{
             blog: blog
         })
     }
+    const loadBlogsHandler = (blogs) =>{
+        dispatchBlogsAction({
+            type: 'LOAD_BLOGS',
+            blogs: blogs
+        })
+    }
     const blogsContext = {
         blogs: blogsState.blogs,
         totalBlogs: blogsState.totalBlogs,
         addBlogs: addBlogsHandler,
         postBlog: postBlogHandler,
+        loadBlogs: loadBlogsHandler,
         
     }
     return(

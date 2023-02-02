@@ -3,6 +3,7 @@ import React from "react";
 const Settings = () => {
     const settingClickHandler = (event) =>{
         event.preventDefault();
+        
     }
   return (
     <>
